@@ -1,4 +1,4 @@
-from app.Models import Category, Product
+from app.Models import Category, Product, User
 
 
 def load_categories():
@@ -87,3 +87,8 @@ def load_products(kw=None):
     #     produst = [x for x in produst if x['name'].find(kw) >= 0]
 
     return products.all()
+
+
+def get_user_by_id(user_id):
+    return User.query.get(user_id)
+# nó đều lấy cái khóa chính
