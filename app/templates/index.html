@@ -23,5 +23,10 @@
         </div>
         {% endfor %}
     </div>
+    <ul class="pagination mt-1" style="display: flex; justify-content: center">
+        {% for a in range(pages) %}
+        <li class="page-item"><a class="page-link" href="/?page={{ a + 1 }}">{{ a + 1 }}</a></li>
+        {% endfor %}
+    </ul>
 </section>
 {% endblock %}

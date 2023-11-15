@@ -1,5 +1,6 @@
 from app.Models import Category, Product, User
 import hashlib
+from app import app
 
 
 def load_categories():
@@ -16,7 +17,7 @@ def load_categories():
     # }]
 
 
-def load_products(kw, cate_id):
+def load_products(kw, cate_id, page=None):
     products = Product.query
     if kw:
         products = products.filter(Product.name.contains(kw))
@@ -88,11 +89,25 @@ def load_products(kw, cate_id):
     #     produst = [x for x in produst if x['name'].find(kw) >= 0]
     if cate_id:
         products = products.filter(Product.category_id.__eq__(cate_id))
+
+    if page:
+        page = int(page)
+        page_size = app.config['PAGE_SIZE']
+        start = (page - 1) * page_size
+
+        return products.slice(start, start + page_size)
+
     return products.all()
+
+
+def product_count():
+    return Product.query.count()
 
 
 def get_user_by_id(user_id):
     return User.query.get(user_id)
+
+
 # nó đều lấy cái khóa chính
 
 def auth_user(username, password):
