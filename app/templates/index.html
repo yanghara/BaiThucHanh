@@ -15,7 +15,7 @@
                 <div class="card-body">
                     <h4 class="card-title">{{ c.name }}</h4>
                     <p class="card-text">{{ c.prices }}</p>
-                    <a href="#" class="btn btn-primary">Mua Ngay</a>
+                    <a href="#" onclick="addToCart({{c.id}}, '{{c.name}}', {{c.price}} )" class="btn btn-primary">Mua Ngay</a>
                     <a href="#" class="btn btn-danger">Xem Chi Tiết</a>
 
                 </div>
@@ -29,4 +29,5 @@
         {% endfor %}
     </ul>
 </section>
+<script src="{{ url_for('static', filename='js/cart.js') }}"></script>
 {% endblock %}
