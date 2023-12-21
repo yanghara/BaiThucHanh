@@ -1,6 +1,7 @@
-from app.Models import Category, Product, User
+from app.Models import Category, Product, User, Receipt, ReceiptDetails
 import hashlib
-from app import app
+from app import app, db
+from flask_login import current_user
 
 
 def load_categories():
@@ -115,3 +116,15 @@ def auth_user(username, password):
 
     return User.query.filter(User.username.__eq__(username.strip()),
                              User.password.__eq__(password)).first()
+
+
+def app_receipt(cart):
+    if cart:
+        receipt = Receipt(user=current_user)
+        db.session.add(receipt)
+
+        for c in cart.values():
+            d = ReceiptDetails(quantity=c['quantity'], price=c['price'], product_id=c['id'], receipt=receipt)
+            db.session.add(d)
+
+        db.session.commit()
