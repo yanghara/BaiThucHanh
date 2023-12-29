@@ -2,7 +2,8 @@ from app.Models import Category, Product, User, Receipt, ReceiptDetails
 import hashlib
 from app import app, db
 from flask_login import current_user
-
+from sqlalchemy import func
+import cloudinary.uploader
 
 def load_categories():
     return Category.query.all()
@@ -128,3 +129,30 @@ def app_receipt(cart):
             db.session.add(d)
 
         db.session.commit()
+
+
+def add_user(name, username, password, avatar):
+    # import pdb
+    # pdb.set_trace()
+    # debuging fix
+    password = str(hashlib.md5(password.strip().encode('utf-8')).hexdigest())
+    u = User(name=name, username=username, password=password,
+             avatar='https://cf.shopee.vn/file/1e1ed727b366712356405041c20c25ab')
+
+    if avatar:
+        res = cloudinary.uploader.upload(avatar)
+        print(res)
+        u.avatar = res['secure_url']
+
+    db.session.add(u)
+    db.session.commit()
+
+
+def count_productReceipt():
+    return db.session.query(Category.id, Category.name,
+                            func.count(Product.id)).join(Product, Product.category_id == Category.id, isouter=True).group_by(Category.id).all()
+
+
+if __name__ == '__main__':
+    with app.app_context():
+        print(count_productReceipt())

@@ -11,3 +11,11 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 app.config["PAGE_SIZE"] = 4
 db = SQLAlchemy(app=app)
 login = LoginManager(app=app)
+
+import cloudinary
+
+cloudinary.config(
+  cloud_name = "drv8vy8ww",
+  api_key = "439865293435837",
+  api_secret = "E-w12KwkUBKjS2wC-FzLdqO4uso"
+)
